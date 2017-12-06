@@ -67,6 +67,17 @@
 %
 %\usepackage{memhfixc}
 
+\usepackage{makeidx}
+\makeindex
+
+%% def'n copied from: https://tex.stackexchange.com/questions/318472/change-index-see-also-and-see-format
+\newcommand\gobbleone[1]{}
+\newcommand{\seeonly}[2]{\ (\emph{\seename} #1)}
+\let\oldindex\index
+\renewcommand{\index}[1]{\def\exptoindex{#1}\expandafter\oldindex\expandafter{\exptoindex}}
+\newcommand{\seeonlyindex}[2]{\index{#1@#1\protect\gobbleone|seeonly{#2}}}
+%% end of copy new command from tex.stackexchange.com
+
 \makeatletter
 \let\Old@ExerciseList\ExerciseList
 \renewcommand\ExerciseList{\section*{Exercises}\addcontentsline{toc}{section}{\protect\numberline {}Exercises}
@@ -74,9 +85,10 @@
 \makeatother
 
 %%\title{How Computers Really Work: Logic in Action}
-\title{How Computers Work: Logic in Action}
+%%\title{How Computers Work: Logic in Action}
+\title{Logic, Equations, and Computer Science}
 \author{Rex Page \and Ruben Gamboa}
-\date{January 18, 2011}
+\date{January 2018}
 
 \begin{document}
 
@@ -90,17 +102,21 @@
 
 % half-title page
 \vspace*{\fill}
-\begin{adjustwidth}{1in}{1in}
+\begin{adjustwidth}{1in}{2cm}
 \begin{flushleft}
-\HUGE\sffamily How Computers Work:
+%%\HUGE\sffamily How Computers Work:
+\HUGE\sffamily Logic\\
+\hspace{1cm}\HUGE\sffamily Equations\\
+\hspace{3cm}\Huge\sffamily and\\
+\hspace{2.6cm}\HUGE\sffamily Computer Science\\
 \end{flushleft}
-\begin{center}
+%%\begin{center}
 %%\HUGE\sffamily  Really Work:
-%\HUGE\sffamily  Work:
-\end{center}
-\begin{flushright}
-\HUGE\sffamily  Logic in Action
-\end{flushright}
+%%\HUGE\sffamily  Work:
+%%\end{center}
+%%\begin{flushright}
+%%\HUGE\sffamily  Logic in Action
+%%\end{flushright}
 %%\begin{center}
 %%\sffamily (Draft Edition 7)
 %%\end{center}
@@ -112,20 +128,28 @@
 \vspace*{\fill}
 \begin{center}
 %%\HUGE\textsf{How Computers Really Work:}\par
-\HUGE\textsf{How Computers Work:}\par
+%%\HUGE\textsf{How Computers Work:}\par
+\Huge\textsf{Logic, Equations, and Computer Science}\par
 \end{center}
-\begin{center}
-\HUGE\textsf{Logic in Action}\par
-\end{center}
+%%\begin{center}
+%%\HUGE\textsf{Logic in Action}\par
+%%\end{center}
+
+\vspace{1cm}
 
 \begin{center}
 \LARGE\textsf{Rex Page}\par
+\Large\textsf{The University of Oklahoma}\par
+\end{center}
+
+\begin{center}
 \LARGE\textsf{Ruben Gamboa}\par
+\Large\textsf{University of Wyoming}\par
 \end{center}
 \vspace*{\fill}
-\begin{center}
-University of Oklahoma
-\end{center}
+%%\begin{center}
+%%University of Oklahoma
+%%\end{center}
 \clearpage
 
 % copyright page
@@ -134,10 +158,11 @@ University of Oklahoma
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{\baselineskip}
 %%\ttfamily
-\textcopyright{} 2011 Rex Page and Ruben Gamboa \\
+\textcopyright{} 2018 Rex Page and Ruben Gamboa \\
 All rights reserved
 
-Norman, OK.
+Santa Cruz, California\\
+Laramie, Wyoming
 
 Printed in the United States
 
@@ -151,7 +176,8 @@ Printed in the United States
 \end{center}
 \begin{center}
 \begin{tabular}{ll}
-First edition:                        & 19 January 2011 \\
+First edition:                        & January 2018 \\
+%First edition:                        & 19 January 2011 \\
 % Second impression, with corrections:    & 2 July 2001 \\
 % Second edition:                       & 14 July 2001 \\
 % Second impression, with corrections:    & 3 August 2001 \\
@@ -170,6 +196,21 @@ First edition:                        & 19 January 2011 \\
 
 \endgroup
 
+\clearpage
+
+% dedication page
+\vspace*{\fill}
+
+\begin{center}
+\normalsize\textsf{\emph{To Warren R Page, who would have enjoyed knowing some of this stuff}}\par
+\end{center}
+
+\begin{center}
+\normalsize\textsf{\emph{Ruben's dedication goes here}}\par
+\end{center}
+
+\vspace*{\fill}
+
 \cleardoublepage
 
 \pagestyle{headings}
@@ -185,6 +226,9 @@ First edition:                        & 19 January 2011 \\
 \clearpage
 \listofasides
 \clearpage
+\include{preface}
+\clearpage
+\include{roadmap}
 
 \mainmatter
 
@@ -237,6 +281,12 @@ First edition:                        & 19 January 2011 \\
 \include{ch15}
 
 \backmatter
+
+%clear, phantom, addcontents puts Index in ToC at level of Part I, II, ...
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{part}{Index}
+\printindex
 
 \cleardoublepage
 \pagestyle{empty}
