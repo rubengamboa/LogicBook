@@ -7,31 +7,30 @@ Consider the problem of keeping things organized so you can find them.
 It's not hard if you don't have many things.
 If you have a dozen pairs of socks, you can just throw them in a drawer
 and find the pair you want quickly, without really having to search.
-However, if you run an office supply store that carries a few thousand different
-kinds of paper, envelopes, printers, and desks,
-you'll need to arrange them carefully,
-so people can find them.
+However, if you run an office supply store that carries thousands of
+types of paper, envelopes, pencils, and erasers,
+you'll need to arrange them carefully, so people can find them.
 
 The importance of being organized increases with the number of items.
 If you run a warehouse, you might have to keep track of many thousands of things.
 One solution is to associate a stock number with each
-kind of item, set up a bin for each, and arrange the bins by 
+kind of item, set up a bin for each, and arrange the bins by
 \index{stock number search}stock number.
 That works reasonably well, even if there are many thousands of kinds of items.
 When the warehouse decides to stock a new kind of item, you just set up
 a bin at the end of the line and give it a stock number higher than the
-one that was at the end before.
+one before it.
 
 However, what if an item gets discontinued?
-You can empty out all of its bins, but what do you do with the space?
+You can empty out its bin, but what do you do with the space?
 It might be okay to leave the space empty for the first few discontinuations,
 but with many thousands of items, there will be, over time, thousands
 of discontinuations, and you'll end up wasting a lot of space.
 
 Furthermore, stock numbers solve the problem of finding the
 right bin, but they don't solve the problem of remembering the stock number
-that goes with, say, 20-pound, white printer paper versus color ink cartridges
-for printers. To be able to find the stock number associated with
+that goes with, say, 20-pound, white paper versus color ink cartridges.
+To be able to find the stock number associated with
 an item, you'll need some kind of index that arranges the items in
 categories, subcategories, and the like, and perhaps in alphabetical
 order by name within each category.
@@ -39,7 +38,7 @@ When the warehouse discontinues an item,
 you need to cross it out in the index,
 and when a new kind of item comes in, you need to write it into
 the index at the appropriate place.
-Eventually, the index is a mess, and you need to reprint it.
+Eventually, the index is a mess, and needs reprinting.
 
 You might be able to make this work, even for many thousands of items,
 but you can see that the idea doesn't scale up well, and when you're
@@ -52,9 +51,8 @@ So, keeping the items in a list starting with the first item,
 then the second, third, and so on cannot work in practice.
 It will require too much data movement to expand spaces between
 items to insert new ones or collapse space between items to delete old ones.
-The problem calls for a better solution,
+The problem needs a better solution,
 and that's what this chapter is about.
-
 Let's recap the problem.
 
 \emph{Pile of socks method}.
@@ -62,18 +60,16 @@ If you have only a few items to keep track of,
 the \index{socks, pile of}\index{pile of socks}pile-of-socks method works.
 When you get a new pair of socks, you just throw it in the drawer.
 When an old pair wears out, you just throw it away.
-
 If you want to locate a particular pair of socks,
 you just look through the drawer,
 pair by pair, until to find the one you're looking for.
 If you have ten pairs, the first pair you look at might be
 the one you want, or the second, or third.
 At worst, you'll have to look through all ten pairs.
-The average number of pairs
-you need to look through to find a particular, randomly selected, pair
-probably will be about half the number of pairs.
+On average you'll probably find the right pair
+after looking through about half of them.
 
-\emph{Binary search method}.
+\emph{Binary search method}.\label{binary-search-method}
 If you had a thousand books on your bookshelves,
 you could arrange them in alphabetical order by title.
 When you get a new book, you just insert it in the right place,
@@ -84,19 +80,19 @@ or slide the ones beyond it back to fill in the space.
 To find a particular book, you would probably just guess about
 where it would be, look there, and adjust your next guess accordingly.
 However, there is an efficient way to manage your search that
-guarantees finding it in just a few steps. It's called ``binary search''.
+guarantees finding it in just a few steps. It's called \emph{binary search}.
 First, you look at the middle book.
 If it's the one you want, great. You're done.
-If not, the title you're looking for will be either
-later in alphabetical order or earlier.
+If not, the title you're looking for will either
+come after the middle one or before it in alphabetical order.
 In either case, the number of possibilities has been cut in half,
 and you can repeat the procedure to find the book you're looking for
 among the remaining possibilities.
 Since you cut the number of books in half each time,
-if you start with a thousand books, the worse case takes
-it down to he book you want in at most ten steps
-because if you cut 1,000 in half, then cut the quotient (500) in half,
-and so on, you get down to one in ten steps. Try it and you'll see.
+it will not take more than ten steps to locate
+a particular book among a thousand books
+because cutting 1,000 in half, then cutting 500 in half,
+and so on, you get down to one in ten steps.
 
 Looking at it from the other direction, starting from one
 and doubling at each stage, it goes 1, 2, 4, 8, 16, 32, 64,
@@ -107,15 +103,16 @@ in the binary search procedure
 when there are $n$ items, altogether, is the
 first integer $k$ that makes $2^k \geq n$, or
 what amounts to the same thing, $k \geq log_2(n)$.
-
-That is, the number of steps in a 
+That is, the number of steps in a
 \index{search!binary}\index{binary search}binary search through
-$n$ items is the first integer that is at least as large as 
-\index{logarithm}$log_2(n)$.
+$n$ items is \index{logarithm}$log_2(n)$ rounded up
+to the next integer.
 
-The first integer that is at least as large as a number $x$ is known
-as the ``ceiling'' of $x$, usually written using ceiling brackets:
-$\lceil x \rceil$. With this notation, the formula for the maximum number of steps
+When you round a number up to the next integer, you get the
+\index{ceiling brackets}\index{brackets!ceiling}\emph{ceiling}
+of the number:
+$\lceil x \rceil$ $=$ ceiling of $x$ $=$ $x$ rounded up to the next integer.
+With this notation, the formula for the maximum number of steps
 required to locate a particular item using
 binary search with a collection of $n$ items
 is $\lceil log_2(n) \rceil$.
@@ -123,16 +120,16 @@ is $\lceil log_2(n) \rceil$.
 This gives binary search an amazing
 advantage in speed over the pile-of-socks method.
 It reduces the number of steps required to find a particular item
-among a collection of $n$ items from an average of $n/2$
+in a collection of $n$ items from an average of $n/2$
 in the pile-of-socks approach to
 to a maximum of $\lceil log_2(n) \rceil$
 using binary search.
-
-That's $(n/2)/\lceil log_2(n) \rceil$ times faster, 
+That's $(n/2)/\lceil log_2(n) \rceil$ times faster,
 and $(n/2)/\lceil log_2(n) \rceil$ turns
 out to be a very big number when there are a lot of items.
-\index{search!binary vs linear}
-For a thousand items, binary search is, on the average,
+
+\index{search!binary vs linear}For a thousand items,
+binary search is, on the average,
 $(1000/2)/\lceil log_2(1000) \rceil$ times faster than the pile-of-socks method.
 That's about 50 times faster.
 For a ten thousand items, it's 350 times times faster.
@@ -157,11 +154,13 @@ becomes unwieldy, to say the least, when there are
 millions of items.
 
 That's what happens when the items are entries in
-an \index{search, array}\index{array search}array of $n$ elements, 
+an \index{search, array}\index{array search}array of $n$ elements,
 numbered, say, 0 to $n - 1$.
 Whenever you add a new item or delete an old one,
-you have to slide the array elements around to make space
-or eliminate gaps.
+you have to move things around, one way or the other,
+to make space or fill in gaps to
+keep the numbers that select array elements
+in a contiguous sequence, 0, 1, 2, 3, \dots.
 So, keeping items in order in an array
 to facilitate using binary search
 works fine when the items don't change,
@@ -174,15 +173,14 @@ other than just numbering them sequentially.
 
 Not long after computers began to have enough
 memory to keep track of many thousands of items,
-the mathematicians \index{Adelson-Velskii, Georgy}Adelson-Velskii 
-
+the mathematicians \index{Adelson-Velskii, Georgy}Adelson-Velskii
 and \index{Landis, Evgenii}Landis
 devised a structure that
-eliminated the problem of sliding things around in arrays to
+eliminated the problem of sliding things around to
 accommodate new items (the \emph{insertion problem})
 or get rid of old ones (the \emph{deletion problem}).
-This structure, known as the 
-\index{AVL tree}\index{binary tree!AVL}\index{tree!AVL}AVL tree 
+This structure, known as the
+\index{AVL tree}\index{binary tree!AVL}\index{tree!AVL}AVL tree
 (``AVL'' for Adelson-Velskii and Landis)\label{AVL-tree},
 makes it possible to find an item or
 insert a new one
@@ -193,26 +191,24 @@ so the AVL solution provides a practical way to do all three
 operations: search, insertion, and deletion.
 Adelson-Velskii and Landis solved a very difficult problem
 when they figured out how to do this,
-but their solution isn't too difficult to understand,
-so that is what we are going to look into.
+but their solution isn't hard to explain,
+and that is the goal of this chapter.
 
 We will need some terminology to facilitate the discussion.
-\label{empty-tree-def}\index{tree!definition}The term ``tree''
-will mean either a special tree called the \emph{empty tree},
-or a \label{node-def} non-empty collection of \emph{nodes},
-\label{root-def}one of which is known as the \emph{root}.
-Each node has a sequence of subtrees, and
-\label{subtree-def}each \index{subtree, definition}\emph{subtree} 
+\label{empty-tree-def}\index{tree!definition}The term \emph{tree}
+will mean either an \emph{empty tree}
+or a \label{node-def}\emph{node} called the
+\label{root-def}\emph{root}.
+A node consists of a sequence of one or more subtrees, and each
+\label{subtree-def}\index{subtree, definition}\emph{subtree}
 is also a tree.
 That is, each subtree is either the empty tree,
-or it consists of a root and a sequence of subtrees.\footnote{Yet
-another usefully circular,
-or as we usually call them, ``inductive'', definition.}
+or it consists of a node, which is its root.\footnote{Yet
+another usefully circular (inductive) definition.}
 
 \label{search-tree-def}A
 \index{search tree!definition}\index{tree!search}\emph{search tree},
-for our purposes, is a tree in which each node,
-if there are any nodes, is made up of four things:
+for our purposes, is a tree in which each node is made up of four things:
 \begin{quote}
 \begin{enumerate}
 \item a \emph{key},
@@ -221,41 +217,33 @@ if there are any nodes, is made up of four things:
 \item a search tree knows as the \emph{right subtree}.
 \end{enumerate}
 \end{quote}
-The \index{empty tree}\index{tree!empty}\index{search tree!empty}empty tree 
+The \index{empty tree}\index{tree!empty}\index{search tree!empty}empty tree
 is a search tree,  by default.
 \label{sibling-def}
-We refer to the two subtrees in a node as 
-\index{tree!sibling}
-\index{sibling, in tree}\index{search tree!sibling}\emph{siblings}.
-
-\label{occurs-in-def}
-\index{occurs in search tree}
-\index{search tree!key occurs in}
-A key is said to \emph{occur in} a search tree if it is the key at the root
+We refer to the two subtrees in a node as
+\index{tree!sibling}\index{sibling, in tree}\index{search tree!sibling}\emph{siblings}.
+A key is said to
+\label{occurs-in-def}\index{occurs in search tree}\index{search tree!key occurs in}\emph{occur in}
+a search tree if it is the key at the root
 or if the key occurs in either subtree of the root.
-No keys occur in an empty tree, of course.
+No keys occur in an empty tree.
 
-Keys in search trees must come from a domain
-that has a \index{total ordering}\index{order!total}\emph{total ordering}.
-\label{total-ordering-def}
+Keys in search trees must come from a domain that has a
+\label{total-ordering-def}\index{total ordering}\index{order!total}\emph{total ordering}.
 That is, for any two different keys,
 there must be some way to determine
 which one precedes the other in the ordering.
-For example, the ordering may be alphabetic
-if the keys are words.
-If the keys are numbers, then ordinary numeric ordering would work,
-but other orderings would also work, as long as, given any
-two different keys, there is some way to determine
-which one precedes the other.
+For example, when the keys are words made up of lower-case letters,
+alphabetic ordering is a total order.
+If the keys are numbers, then ordinary numeric ordering is a total order.
 
 As a consequence of having a total order on the keys,
 it will be possible, given any three keys,
 no two of which are the same,
 to determine which one comes first,
-which comes second, and which come third.
-Similarly, any collection of distinct keys,
-no two of which are the same,
-can be arranged as an ordered sequence:
+which comes second, and which comes third.
+More generally, any collection of distinct keys
+can be arranged in a sequence in increasing order:
 each key in the sequence
 precedes, in the ordering, the next key in the sequence.
 
@@ -263,10 +251,10 @@ To support binary search,
 each node in a search tree
 has the property that all of the keys in the left subtree
 precede (in the ordering on the domain of keys)
-the key in the node, and that key precedes all of
-the keys in the right subtree.
-\label{ordered-def}\index{tree!ordered}\index{search tree!ordered}
-A tree with this property is called an ``ordered'' tree,
+the key of the node, and the key of the node precedes all of
+the keys in its right subtree.
+A tree with this property is called an
+\label{ordered-def}\index{tree!ordered}\index{search tree!ordered}\emph{ordered tree},
 so search trees are ordered trees.
 
 \label{binary-search-def}
@@ -281,7 +269,7 @@ If it isn't the same as the key in the root,
 it must either precede or follow the root key in the ordering.
 If the key you are looking for precedes the root key,
 look for it in the left subtree.
-If it's greater than the root key, look for it in the right subtree.
+If it follows the root key, look for it in the right subtree.
 
 To build a search tree that has a single key,
 just construct a node consisting of the key,
@@ -310,29 +298,27 @@ an empty subtree.
 At that point, the search stops with the conclusion that the key
 does not occur in the tree.
 
-The  
-\index{height!tree}\index{tree!height}\index{AVL tree!height definition}
-\index{search tree!height}\emph{height}  of a tree is
-\label{height-is-max-steps}
-the maximum number of keys that binary search could need
-to examine to find a key.
+The
+\label{height-is-max-steps}\index{height!tree}\index{tree!height}\index{AVL tree!height definition}\index{search tree!height}\emph{height}
+of a search tree is the maximum number of keys
+that binary search might need
+to examine to find a key in the tree.
 Later, we will define the height of a tree formally,
 but for now just think of it as the maximum number of steps
 in a binary search for a key in the tree.
 
 AVL trees maintain, in every node,
 a balance between the heights of the subtrees in the node.
-The process of inserting new nodes or deleting old ones
-maintains balance, 
+The AVL method of inserting new nodes or deleting old ones
+maintains balance,
 which keeps the tree from getting too tall
 on one side or the other.
-In this way the AVL method preserves
-a high ratio between number of keys
-a search tree contains and the height of the tree.
+This preserves a high ratio between number of keys
+the tree contains and the height of the tree.
 That is, the insertion process makes sure
 to keep the height of the tree small
 compared to the number of keys.
-Deletion does, too.
+The AVL deletion method does this, too.
 
 When a key is inserted or deleted,
 the AVL method keeps the height of the tree from exceeding
@@ -341,21 +327,21 @@ the base-2 logarithm of the number of keys by more than
 fifty percent.\footnote{The proof
 of this fact would take us too far afield, so we are
 leaving the proof out of this discussion.}
-Therefore, a binary search will terminate
-within a fixed percentage of $log_2(n)$ steps,
-where $n$ is the number of keys stored in the tree.
+Therefore, the number of steps in a binary search
+of an AVL tree containing $n$ keys
+will  not exceed $\frac{3}{2}\cdot log_2(n)$ steps.
 To have an inkling of how ingenious the AVL solution is,
 try to find a way to insert keys into a search tree
-in such a way that
+in a way that has the following properties.
 \begin{quote}
 \index{balance!AVL tree}\index{AVL tree!balance}\index{search tree!balance}
 \index{order!AVL tree}\index{AVL tree!order}\index{search tree!order}
 \begin{enumerate}
-\item the key in each node follows every key
-      that occurs in its left subtree,
-\item the key in each node precedes every key
-      in the right subtree, and
-\item sibling subtrees differ in height by zero or one.
+\item The key in each node follows every key
+      that occurs in its left subtree.
+\item The key in each node precedes every key
+      in the right subtree.
+\item Sibling subtrees differ in height by zero or one.
 \end{enumerate}
 \end{quote}
 
@@ -391,51 +377,37 @@ old ones quickly deleted.
 Any detailed discussion of the AVL solution requires
 a way to represent search trees.
 In our representation,
-\label{key-representation}
-\index{AVL tree!representation}
-\index{representation!AVL tree}
-\index{key!AVL tree}
-keys will be natural numbers
+\label{key-representation}\index{AVL tree!representation}\index{representation!AVL tree}\index{key!AVL tree}keys will be natural numbers
 ordered in the usual way.
 That is, one key, $k_1$, precedes another key, $k_2$,
 if $k_1 < k_2$ in the usual numeric ordering.
 That means that the key in a node of a search tree
 is numerically greater than all the keys that occur in
-left subtree of the node,
+the left subtree of the node,
 and numerically less than
 all the keys that occur in the right subtree of the node.
-\label{empty-tree-representation}
-The empty list, ``nil'', will represent the 
-\index{empty tree}\index{search tree!empty}
-\index{AVL tree!empty}empty tree.
-\label{node-representation}
-A \index{search tree!node}\index{AVL tree!node}\index{node, in AVL tree}node 
+\label{empty-tree-representation}The empty list (\textsf{nil}) will represent the
+\index{empty tree}\index{search tree!empty}\index{AVL tree!empty}empty tree.
+\label{node-representation}A \index{search tree!node}\index{AVL tree!node}\index{node, in AVL tree}node
 in a search tree will be a list of four elements:
-\index{representation!AVL tree}\index{AVL tree!representation}
-\index{search tree!representation}
-\index{tree!representation}
-key (a number), data (of any kind), left subtree, and right subtree.
+\index{representation!AVL tree}\index{AVL tree!representation}\index{search tree!representation}\index{tree!representation}key (a number),
+data (of any kind), left subtree, and right subtree.
 Those are the essentials of the representation.
 
 \label{root-node-def}
-The 
-\index{root node, AVL tree}\index{search tree!root}\index{tree!root}
-\index{AVL tree!root}``root node'' 
-of a search tree
-is the node that represents the entire tree.
-The formula for the root node is
-the formula that represents the entire tree.
-The key in the root node is
-the first element of the list that represents the tree,
+The
+\index{root node, AVL tree}\index{search tree!root}\index{tree!root}\index{AVL tree!root}\emph{root node}
+of a search tree represents the entire tree.
+The formula for the root node, like the formula for any node,
+has a key, a left subtree, and a right subtree.
+However, unlike other nodes, the root node is not a subtree
+of any other node, and all keys in the tree occur
+either at the root or in one of its subtrees.
+The key at the root is the first element of the list that represents the tree,
 and the data associated with the root is the second element.
-\index{AVL tree!representation}\index{search tree!representation}
-\index{representation!AVL tree}
-\index{tree!representation} \index{search tree!subtree}
-\index{AVL tree!subtree}\index{subtree!AVL tree}
-\label{left-subtree-def}
-The third element is the \index{left subtree (AVL)}left subtree,
-\label{right-subtree-def}
-and the fourth element is the \index{right subtree (AVL)}right subtree.
+\index{AVL tree!representation}\index{search tree!representation}\index{representation!AVL tree}\index{tree!representation} \index{search tree!subtree}\index{AVL tree!subtree}\index{subtree!AVL tree}\label{left-subtree-def}The third element
+is the \index{left subtree (AVL)}left subtree,
+\label{right-subtree-def}and the fourth element is the \index{right subtree (AVL)}right subtree.
 
 Figure \ref{fig:searchtree-diagram} shows a formula
 for a search tree in which the data are strings.
@@ -443,9 +415,7 @@ The figure also displays a diagram of the tree
 that the formula represents.
 This pictorial way of looking at search trees
 will clarify discussions of the insertion process.
-\index{tree!diagram}\index{search tree!diagram}\index{AVL tree!diagram}
-\index{diagram!AVL tree}
-In a tree diagram, the root node is the one at the top,
+\index{tree!diagram}\index{search tree!diagram}\index{AVL tree!diagram}\index{diagram!AVL tree}In a tree diagram, the root node is the one at the top,
 and the subtrees dangle from lines going down to
 the left and right.
 To follow the discussion,
@@ -465,7 +435,7 @@ given its formula, and vice versa.
 \label{height-def}
 \index{height!tree}\index{tree!height}
 \index{AVL tree!height operator}\index{search tree!height}
-The height of an empty tree is zero.
+The \emph{height} of an empty tree is zero.
 The height of a non-empty tree is one more than that of the
 taller of its left and right subtrees.
 The size of a search tree is the number of keys that occur in the tree,
@@ -475,18 +445,18 @@ of the sizes of its left and right subtrees.
 
 We use ACL2 to formalize these definitions
 (Figure \ref{fig:tree-functions}, page \pageref{fig:tree-functions}),
-starting with an operator to build a tree from its four components.
+starting with an operator \textsf{mktr} to build a tree from its four components.
 Then we define operators to extract keys, data, and subtrees from nodes
-(key, dat, lft, and rgt).
+(\textsf{key}, \textsf{dat}, \textsf{lft}, and \textsf{rgt}).
 Finally, we define predicates to recognize keys and search trees
-(iskeyp, treep, emptyp),
-and to find out whether a key occurs in a tree (keyp).
+(\textsf{iskeyp}, \textsf{treep}, \textsf{emptyp}),
+and to find out whether a key occurs in a tree (\textsf{keyp}).
 
 \begin{figure}
 \begin{center}
 \begin{Verbatim}
 (defun mktr (k d lf rt)            ; make tree from
-  (list k d lf rt))                ;  key, data, subtrees
+   (list k d lf rt))               ;  key, data, subtrees
 (defun key (s) (first s))          ; key at root
 (defun dat (s) (second s))         ; data at root
 (defun lft (s) (third s))          ; left subtree
@@ -500,21 +470,15 @@ and to find out whether a key occurs in a tree (keyp).
   (if (emptyp s)
       0                                     ; {sz0}
       (+ 1 (size (lft s)) (size (rgt s))))) ; {sz1}
-(defun n-element-list (n xs)
-  (if (zp n)
-      (equal xs nil)
-      (and (consp xs) (n-element-list (- n 1) (rest xs)))))
-(defun iskeyp (k)                ; keys are natural numbers
-  (natp k))
-(defun treep (s)                 ; search tree?
+(defun iskeyp (k)
+   (natp k))
+(defun treep (s)                  ; search tree?
   (or (emptyp s)
-      (and (n-element-list 4 s) (iskeyp (key s))
+      (and (= (len s) 4) (natp (key s))
            (treep (lft s)) (treep (rgt s)))))
 (defun keyp (k s)                ; key k occurs in s?
   (and (iskeyp k) (treep s) (not (emptyp s))
-       (or (= k (key s))
-           (keyp k (lft s))
-           (keyp k (rgt s)))))
+       (or (= k (key s)) (keyp k (lft s)) (keyp k (rgt s)))))
 \end{Verbatim}
 \end{center}
 \index{equation, by name!\{ht0\}, \{ht1\}}
@@ -572,34 +536,34 @@ search trees are ordered (page \pageref{ordered-def}) if, for each node,
 its key is greater than all of the keys that occur in the left subtree
 and less than all the keys that occur in the right subtree.
 A empty tree is ordered by default.
-The following equations of predicate calculus define
-``ordp'' so that
-(ordp $s$) is true if $s$ is ordered and false otherwise.
+The following equations define
+the predicate ordp so that
+\textsf{(ordp $s$)} is true if $s$ is ordered and false otherwise.
 
 \begin{center}
 \label{def:ordp}
 \index{predicate, by name!ordp (AVL tree)}\index{AVL tree!ordp predicate}
 \seeonlyindex{ordp (AVL tree)}{predicate}
 \index{order!AVL tree}\index{AVL tree!order}\index{search tree!order}
-\index{equation, by name!\{ord0\}, \{ord1\}}\index{axiom, by name!\{ord0\}, \{ord1\}}
+\index{equation, by name!\{ord\}}\index{axiom, by name!\{ord\}}
 \begin{tabular}{lll}
-(ordp nil) = & true & \{\emph{ord0}\} \\
-(ordp $s$) = & (treep s)  $\wedge$                                                                                     & \{\emph{ord1}\} \\
-             & ($\forall x$.((keyp $x$ (lft $s$)) $\rightarrow$ $x$ < (key $s$))) $\wedge$ (ordp (lft $s$)) $\wedge$ & \\
-             & ($\forall y$.((keyp $y$ (rgt $s$)) $\rightarrow$ $y$ > (key $s$))) $\wedge$ (ordp (rgt $s$))          & \\
+\textsf{(ordp $s$)} $=$ & \textsf{(emptyp $s$)} $\vee$ & \{\emph{ord}\} \\
+             & (\textsf{(treep $s$)}  $\wedge$                        \\
+             & ~~($\forall x$.(\textsf{(keyp $x$ (lft $s$)}) $\rightarrow$ $x$ $<$ \textsf{(key $s$)})) $\wedge$ \textsf{(ordp (lft $s$))} $\wedge$ & \\
+             & ~~($\forall y$.(\textsf{(keyp $y$ (rgt $s$))} $\rightarrow$ $y$ $>$ \textsf{(key $s$)})) $\wedge$ \textsf{(ordp (rgt $s$))})         & \\
 \end{tabular}
 \end{center}
 
 Duplicate keys do not occur in ordered search trees.
 A more rigorous statement of this fact can be based on
-the following observations:
+the following observations.
 \begin{quote}
 \index{duplicate key, none (AVL)}
 \index{key!duplicates, none}
 \begin{enumerate}
 \item A key in a node does not occur in either of its subtrees.
-\item Any key in one subtree of a node is not equal to the node's key
-      and doesn't occur in the other subtree.
+\item Any key in one subtree of a node is not equal to the key of the node
+      and does not occur in the other subtree.
 \end{enumerate}
 \end{quote}
 
@@ -608,35 +572,26 @@ the following observations:
 \index{AVL tree!unique keys theorem}
 \index{key!unique (theorem)}
 Theorem \{\emph{keys unique}\}. \\
-((iskeyp $k$) $\wedge$ (ordp $s$)) $\rightarrow$ \\
-((($k$ = (key $s$)) $\rightarrow$ ((not(keyp $k$ (lft $s$))) $\wedge$ (not(keyp $k$ (rgt $s$))))) $\wedge$ \\
-(((keyp $k$ (lft $s$))) $\rightarrow$ (($k$ $\ne$(key $s$)) $\wedge$ (not(keyp $k$ (rgt $s$))))) $\wedge$ \\
-(((keyp $k$ (rgt $s$))) $\rightarrow$ (($k$ $\ne$(key $s$)) $\wedge$ (not(keyp $k$ (lft $s$)))))) \\
+$($\textsf{(iskeyp $k$)} $\wedge$ \textsf{(ordp $s$)}$) \rightarrow$ \\
+$(((k$ $=$ \textsf{(key $s$)}$) \rightarrow ((\neg$\textsf{(keyp $k$ (lft $s$))}$) \wedge (\neg$\textsf{(keyp $k$ (rgt $s$))}$)))$ $\wedge$ \\
+\hspace*{1.5mm}$(($\textsf{(keyp $k$ (lft $s$))}$) \rightarrow ((k$ $\ne$ \textsf{(key $s$)}$) \wedge (\neg$\textsf{(keyp $k$ (rgt $s$)}))$))$ $\wedge$ \\
+\hspace*{1.5mm}$(($\textsf{(keyp $k$ (rgt $s$))}$) \rightarrow ((k$ $\ne$ \textsf{(key $s$)}$) \wedge (\neg$(\textsf{keyp $k$ (lft $s$))}$))))$ \\
 \end{quote}
 
 Stating this theorem is more complicated than proving it.
-The proof simply applies the definition of ordp judiciously in each circumstance.
-For example, if $k$ = (key $s$), then (keyp $k$ (lft $s$)) must be false
-because if (keyp $k$ (lft $s$)) were true, then $k$ $<$ (key $s$),
-according to the definition of ordp. That is inconsistent with  $k$ = (key $s$),
-so (keyp $k$ (lft $s$)) must be false
-(\{\emph{reductio ad absurdum}\},
-Figure \ref{fig-02-deduction-rules}, page \pageref{fig-02-deduction-rules}).
-By a similar argument, (keyp $k$ (lft $s$)) also must be false.
-So, the first operand of the $\wedge$ formula of the theorem is true.
-Proving that the other two operands are also true can be done
-with similar reasoning from the definition of ordp.
-Since each operand of the $\wedge$ formula is true when the hypothesis
-of the implication (ordp $s$) is true,
-the implication formula that comprises the theorem is true
-(\{$\wedge$ implication\}, page \pageref{and-implication})
+By equation \{\emph{ord}\}, if \textsf{(keyp $x$ (lft $s$))}, then $x$ $<$ \textsf{(key $s$)}.
+Since $k$ $=$ \textsf{(key $s$)}, we conclude that $x \neq k$.
+That is, ($k$ $=$ \textsf{(key $s$)}$) \rightarrow (\neg$\textsf{(keyp $k$ (lft $s$))}$)$.
+That proves one of the implications in the theorem.
+The others are as easily dispatched by citing parts
+of the definition of the predicate \textsf{ordp}.
 
 \begin{ExerciseList}
-\Exercise Verify:
-(ordp $s$) $\rightarrow$ (((keyp $k$ (lft $s$))) $\rightarrow$ (($k$ $\ne$(key $s$)) $\wedge$ (not (keyp $k$ (rgt $s$)))))
+\Exercise Prove:
+\textsf{(ordp $s$)} $\rightarrow ($\textsf{(keyp $k$ (lft $s$))} $\rightarrow$ (($k$ $\ne$\textsf{(key $s$)}) $\wedge (\neg$ \textsf{(keyp $k$ (rgt $s$))}$)))$
 
-\Exercise Verify:
-(ordp $s$) $\rightarrow$ (((keyp $k$ (rgt $s$))) $\rightarrow$ (($k$ $\ne$(key $s$)) $\wedge$ (not (keyp $k$ (lft $s$)))))
+\Exercise Prove:
+\textsf{(ordp $s$)} $\rightarrow ($\textsf{(keyp $k$ (rgt $s$))} $\rightarrow$ (($k$ $\ne$\textsf{(key $s$)}) $\wedge (\neg$ \textsf{(keyp $k$ (lft $s$))}$)))$
 \end{ExerciseList}
 
 \section{Balanced Search Trees}
@@ -653,7 +608,7 @@ compares some extremes.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.5]{images/unbalanced-trees.png}
+\includegraphics[scale=0.7]{images/unbalanced-trees.png}
 \end{center}
 \index{balance!AVL tree}\index{AVL tree!balance}\index{search tree!balance}
 \index{AVL tree!unbalanced}
@@ -662,16 +617,16 @@ compares some extremes.
 \end{figure}
 
 The tree of height seven in
-Figure \ref{fig:unbalanced-trees} (page \pageref{fig:unbalanced-trees})
+Figure \ref{fig:unbalanced-trees}
 is unbalanced at every level.
 A binary search on this tree would have no advantage over
 looking through a pile of socks, one by one.
-The tree of height four in the figure is not much better.
+The unbalanced tree of height four in the figure is not much better.
 It has the name number of nodes in the left subtree as in the right subtree,
 but all of the subtrees are maximally unbalanced, like a pile of socks.
 
-Balance is what prevents time-consuming searches like the ones in
-extreme cases shown.
+Balance is what prevents time-consuming searches, and the unbalanced
+examples in Figure \ref{fig:unbalanced-trees} show how bad it can get.
 A search tree that, in every node, has two subtrees of the same size
 is balanced in terms of both size and height. The tree of height three
 in Figure \ref{fig:unbalanced-trees} (page \pageref{fig:unbalanced-trees})
@@ -680,24 +635,24 @@ However, the number of steps
 required to find a key in a search tree is determined by the heights of subtrees,
 not the number of nodes they contain, and
 a tree can be balanced with respect to height even though some nodes contain
-many more keys in one subtree than the other.
-The tree of height four in the figure shows how this can happen.
+more keys in one subtree than the other.
+The balanced tree of height four in the figure shows how this can happen.
 The shape of this tree isn't symmetric at any level,
 but no node has subtrees whose heights differ by more than one,
 and that's good enough.
 We are trying keep the height of a tree with $n$ nodes
-within a fixed percentage of $log(n)$,
+within a fixed percentage of $log_2(n)$,
 and height balancing is sufficient to accomplish this goal.
 \index{balance!AVL tree}\index{AVL tree!balance}\index{search tree!balance}
 Full symmetry isn't necessary.
 
 As we mentioned before (page \pageref{50pct-thm})
 the height of a balanced search tree
-turns out to be less than $1.5 \cdot log_2(n)$.
-That makes finding things take a few more
+turns out to be less than $\frac{3}{2} log_2(n)$.
+That makes finding things take more
 steps than the optimal case in which both subtrees of
 each node contains the same number keys,
-but the number of steps in the search is still small.
+but the search still goes fast.
 Finding a particular key among a billion nodes
 might require 45 steps instead of 30, but that's
 still plenty fast compared with half a billion steps,
@@ -707,11 +662,11 @@ What we get for a few extra steps in finding things is
 an astonishing improvement in the number of steps required
 to insert a new key or delete an old key.
 Instead of $n/2$ steps, on the average,
-using arrays in which the keys beyond the point of insertion
+when keys beyond the point of insertion
 all need to be moved to make space for the new one,
 insertion can be done in logarithmic time.
-That is, the number of steps required to to insert
-a node in a search tree will be proportional to $log(n)$,
+That is, the number of steps required to insert
+a node in a search tree will be proportional to $log_2(n)$,
 giving us the same advantage in insertion speed
 that binary search provides in look-up speed.
 Deletion can be handled in a similar way, and with the same effectiveness.
@@ -719,9 +674,8 @@ That is, search, insertion, and deletion can all be done in logarithmic time.
 
 \begin{ExerciseList}
 \Exercise \index{height!AVL tree}\index{AVL tree!height operator}
-\index{binary tree!height}\index{tree!height}
-Prove that it is possible to put $2^n - 1$ keys
-in a binary tree of height $n$.
+\index{binary tree!height}\index{tree!height}Find a way to put put $2^n - 1$ keys
+in a binary search tree of height $n$.
 \end{ExerciseList}
 
 \section{Inserting a New Item in a Search Tree}
@@ -729,12 +683,10 @@ in a binary tree of height $n$.
 To make search, insertion, and deletion efficient,
 search trees must be both ordered and balanced.
 We regard to balance,
-we must make sure that both subtrees
-of any node in a search tree have the same height, or that the
-height of one of them is only one more than the height of the other.
-\label{balance-def}
-The predicate ``balp'' expresses this notion formally
-(Figure \ref{fig:balance-defun}, \pageref{fig:balance-defun}).
+we must make sure that in every node the heights of the left and right subtrees
+differ by one or less.
+\label{balance-defun}The predicate \textsf{balp} expresses this notion formally
+(Figure \ref{fig:balance-defun}, page \pageref{fig:balance-defun}).
 
 \begin{figure}
 \begin{center}
@@ -745,9 +697,7 @@ The predicate ``balp'' expresses this notion formally
            (balp (lft s) (balp (rgt s))))))
 \end{Verbatim}
 \end{center}
-\index{balance!AVL tree}\index{AVL tree!balance}\index{search tree!balance}
-\index{predicate, by name!balp (AVL balance)}\seeonlyindex{balp, AVL tree}{predicate}
-\index{operator, by name!balp (predicate)}
+\index{balance!AVL tree}\index{AVL tree!balance}\index{search tree!balance}\index{predicate, by name!balp (AVL balance)}\seeonlyindex{balp, AVL tree}{predicate}\index{operator, by name!balp (predicate)}
 \caption{Balance Predicate}
 \label{fig:balance-defun}
 \end{figure}
@@ -757,32 +707,29 @@ You can do this by moving left or right down the tree according
 to whether the new key is less than or greater than the key in the node
 under consideration.
 When you arrive at an empty tree,
-make a new tree like the old one, but
-with a node at that point that has,
-as its key, the new key (and its associated data),
-and  put in empty trees for the new node's left and right subtrees.
+insert a node that has the new key
+with its associated data
+and has empty trees as its left and right subtrees.
 The new tree will be properly ordered because
 of the way the procedure located a place to
-hook the new key,
+hook the new key on the tree,
 but the new tree will not be balanced if
 the location of the new key increases the height
-of a subtree that was already one taller than its sibling.
-
-Figure \ref{fig:hook-defun} (\pageref{fig:hook-defun}) provides
-an inductive definition of this key insertion method.
+of a subtree that was already taller than its sibling.
+Figure \ref{fig:hook-defun} (page \pageref{fig:hook-defun}) provides
+an inductive definition of this insertion method.
 The definition uses a non-inductive formula
 to put the new key into an empty tree
 and an inductive formula for the non-empty case.\footnote{In
 \label{same-key-new-data}
-case the operator,
-hook, encounters a key that is the same
+case the \textsf{hook} operator encounters a key that is the same
 as the one it is inserting, it delivers a tree with that key, as it should.
 However, the data associated with the new key will be the data supplied
-as the second argument in the invocation of hook.
+as the second operand in the invocation of \textsf{hook}.
 The old data is lost.
-The definition might have chosen a different alternative
-in the case of equal keys. This choice
-provides a way to associate new data with a key.}
+This provides a way to associate new data with a key.
+The definition might have chosen a different alternative,
+but this is a viable one for our purposes.}
 
 \begin{figure}
 \begin{center}
@@ -812,22 +759,22 @@ can throw the tree out of balance.
 That happens when
 placement of the new key increases the height of a subtree that was
 already taller than its sibling.
-Then the subtree will be two units taller than its sibling,
+Then the subtree is two units taller than its sibling,
 making the tree unbalanced.
-In this case, a rearrangement will bring it back into balance
+In this case, a rearrangement brings it back into balance
 without getting keys out of order.
 In small trees, it's easy to find an ad hoc rearrangement that works,
 as illustrated in Aside \ref{aside:insertion-example}
 (page \pageref{aside:insertion-example}),
 but we need a procedure that works for all search trees,
-not just small ones where we can see what to do.
+not just the small ones where it's easy to see what to do.
 Figuring out a rearrangement procedure is what the rest
 of this chapter is mostly about.
 
 \begin{aside}
 The following example starts with a tree containing one item,
 then inserts three new items, one at a time.
-We use the formula (ins $x$ $a$ $s$) to denote
+We use the formula \textsf{(ins $x$ $a$ $s$)} to denote
 the tree produced by inserting the key $x$ and associated
 data $a$ into the search tree $s$.
 
@@ -845,33 +792,33 @@ Verify, as you go, that each tree is both ordered and balanced.
 \vspace*{-\topsep}
 %
 \\
-(ins \= 1125 "Modem" \\
-     \> {[}8444 "Audio Card" nil nil{]}) \\
+\textsf{(ins} \= \textsf{1125 "Modem" }\\
+     \> \textsf{{[}8444 "Audio Card" nil nil{]})} \\
      \> $\Downarrow$ \\
-{[}1125 "Modem" nil {[}8444 "Audio Card" nil nil{]}{]} \\
+\textsf{{[}1125 "Modem" nil {[}8444 "Audio Card" nil nil{]}{]}} \\
 %
 \vspace*{-1.5\topsep}
 \rule{\textwidth}{0.4pt}%
 \vspace*{-\topsep}
 %
 \\
-(ins \= 4878 "Mouse" \\
-     \> {[}1125 "Modem" nil {[}8444 "Audio Card" nil nil{]}{]}) \\
+\textsf{(ins} \= \textsf{4878 "Mouse"} \\
+     \> \textsf{{[}1125 "Modem" nil {[}8444 "Audio Card" nil nil{]}{]})} \\
      \> $\Downarrow$ \\
-{[}4878 "Mouse" \= {[}1125 "Modem"      nil nil{]}  \\
-              \> {[}8444 "Audio Card" nil nil{]}{]} \\
+\textsf{{[}4878 "Mouse"} \= \textsf{{[}1125 "Modem"      nil nil{]}}  \\
+              \> \textsf{{[}8444 "Audio Card" nil nil{]}{]}} \\
 %
 \vspace*{-1.5\topsep}
 \rule{\textwidth}{0.4pt}%
 \vspace*{-\topsep}
 %
 \\
-(ins \= 2088 "Laser Jet" \\
-     \> {[}4878 "Mouse" \= {[}1125 "Modem" nil nil{]} \\
-     \>               \> {[}8444 "Audio Card" nil nil{]}{]}) \\
+\textsf{(ins} \= \textsf{2088 "Laser Jet"} \\
+     \> \textsf{{[}4878 "Mouse"} \= \textsf{{[}1125 "Modem" nil nil{]}} \\
+     \>               \> \textsf{{[}8444 "Audio Card" nil nil{]}{]})} \\
      \> $\Downarrow$ \\
-{[}2088 "Laser Jet" \= {[}1125 "Modem" nil nil{]} \\
-                  \> {[}4878 "Mouse" nil {[}8444 "Audio Card" nil nil{]}{]}{]} \\
+\textsf{{[}2088 "Laser Jet"} \= \textsf{{[}1125 "Modem" nil nil{]}} \\
+                  \> \textsf{{[}4878 "Mouse" nil {[}8444 "Audio Card" nil nil{]}{]}{]}} \\
 %
 \vspace*{-1.5\topsep}
 \rule{\textwidth}{0.4pt}%
@@ -888,11 +835,11 @@ Putting the new node at the bottom may make the tree taller,
 but not necessarily.
 For example the insertion point might be on the
 empty side of a node that has a tree of height one on the other side,
-which would leave the height of the tree unchanged.
+in which case the insertion would leave the height of the tree unchanged.
 But, if the height of the tree changes,
 how much could it change?
 Not by more than one
-(Theorem \{\emph{i-ht}\}, page \pageref{thm:i-ht}).
+(Theorem \{\emph{i-ht}\}, Exercise \ref{thm:i-ht}).
 
 If the tree with the new key is taller than the old tree,
 the new tree could be unbalanced.
@@ -918,14 +865,14 @@ Explain why.
 (page \pageref{aside:insertion-example}) displays
 insertions leading to an ordered, balanced search tree
 containing four items.
-The resulting trees were chosen from several, equally suitable alternatives.
+The resulting trees were chosen from some equally suitable alternatives.
 Write formulas for ordered, balanced trees different from
-the ones in the example that contain the same keys.
+the ones in the example, but still containing the same keys.
 
 \Exercise Prove by induction on tree height
 that insertion of a new node does not increase height by more than one.
 That is, assuming that $x$ is a key, $s$ is a search tree,
-and hook is the operator defined in
+and \textsf{hook} is the operator defined in
 Figure \ref{fig:hook-defun} (page \pageref{fig:hook-defun}),
 prove the following theorem.
 \begin{center}
@@ -934,16 +881,16 @@ prove the following theorem.
 \index{searchtree!balance}\index{tree!balance}
 \index{height!maximum change in}
 \label{thm:i-ht}
-Theorem \{\emph{i-ht}\}: (height $s$) = $n$ $\rightarrow$ (height (hook $x$ $a$ $s$)) $\leq n+1$
+Theorem \{\emph{i-ht}\}: $($\textsf{(height $s$)} $=$ $n)$ $\rightarrow$ \textsf{(height (hook $x$ $a$ $s$)) } $\leq n+1$
 \end{center}
 
 \Exercise Use induction on height to prove the following theorem
-(ordp is defined on page \pageref{def:ordp}).
+(\textsf{ordp} is defined on page \pageref{def:ordp}).
 \begin{center}
 \index{theorem, by name!\{i-ord\}, AVL insert}\index{order!AVL insert}
 \label{thm:i-ord}
 Theorem \{\emph{i-ord}\}
-(ordp $s$) $\rightarrow$ (ordp (hook $x$ $a$ $s$))
+\textsf{(ordp $s$)} $\rightarrow$ \textsf{(ordp (hook $x$ $a$ $s$))}
 \end{center}
 
 \end{ExerciseList}
@@ -962,52 +909,52 @@ Working through all the possibilities, one by one,
 leads to a proof of this theorem.
 A tree of height zero is empty
 (Theorem \{\emph{ht-emp}\}, page \pageref{thm:ht-emp}),
-and (balp nil) = (emptyp nil) is true, by definition
+and \textsf{(balp nil)} $=$ \textsf{(emptyp nil)} is true, by definition
 (Figure \ref{fig:balance-defun}, page \pageref{fig:balance-defun}).
 Any tree of height one will consist of a single node,
-[$k$ $d$ nil nil], which is balanced because both subtrees
+\textsf{[$k$ $d$ nil nil]}, which is balanced because both subtrees
 have the same height (namely, zero).
 The formula for a tree of height two must match one of the following templates:
-[$k$ $d$ [$j$ $c$ nil nil] nil], [$k$ $d$ nil [$i$ $b$ nil nil]],
-or [$k$ $d$ [$j$ $c$ nil nil] [$i$ $b$ nil nil]].
-Applying the predicate balp
+\textsf{[$k$ $d$ [$j$ $c$ nil nil] nil]}, \textsf{[$k$ $d$ nil [$i$ $b$ nil nil]]},
+or \textsf{[$k$ $d$ [$j$ $c$ nil nil] [$i$ $b$ nil nil]]}.
+Applying the predicate \textsf{balp}
 confirms that all of these trees are balanced,
-and that completes the proof of Theorem \{\emph{bal-ht2}\}.
+and that completes the proof.
 
 With big trees, there are more possibilities,
 but we can reduce part of the problem to
 a shorter tree, rely on induction to deal with that tree,
 and use the solution produced on the shorter tree
 to put together a full solution.
-We want to define an insertion operator ``ins''
+We want to define an insertion operator, \textsf{ins},
 to put a new key in
 an ordered, balanced search tree,
 producing a new search tree that is ordered, balanced,
 and contains the new key as well as all of the old ones.
-The operator hook (Figure \ref{fig:hook-defun}, page \pageref{fig:hook-defun})
+The operator \textsf{hook} (Figure \ref{fig:hook-defun}, page \pageref{fig:hook-defun})
 does the job for trees of height zero or one.
 The new tree is ordered (Theorem \{\emph{i-ord}\}, page \pageref{thm:i-ord})
 and being of height two or less, it is also balanced
 (Theorem \{\emph{i-ht}\}, page \pageref{thm:i-ht},
 together with Theorem \{\emph{bal-ht2}\}, page \pageref{thm:bal-ht2}).
 So, for trees of height zero or one,
-we can use the procedure defined in hook
-to insert new keys.
+the \textsf{hook} operator, by itself, is adequate for
+inserting new keys.
 
 That leaves us with trees of height two or more.
 We want to define an insertion operator, ins,
 so that
 if $s$ is an ordered, balanced search tree
 of height $n+2$ (where $n$ is a natural number),
-then the tree (ins $x$ $a$ $s$)
+then the tree \textsf{(ins $x$ $a$ $s$)}
 is ordered, balanced, contains all the keys in $s$,
 contains the key $x$,
 contains no keys other than $x$ and those in $s$,
 and has height $n+2$ or $n+3$.
 To do this,
-we will start with the hook procedure
+we will start with the \textsf{hook} procedure
 (which has, already, the order and height properties
-that we need for ins),
+that we need for \textsf{ins}),
 then find ways to rebalance when it produces
 a tree with subtrees whose heights differ by more than one.\footnote{Our
 primary concerns will be the issues of height and balance.
@@ -1023,9 +970,9 @@ associate data with keys.
 Usually, keys just provide a way to find the data.
 The operator definitions take care to keep each data item
 with its associated key.
-Whenever we use mktr to build a tree,
-we put the key in the first argument
-and the associated data in the second argument.
+Whenever we use \textsf{mktr} to build a tree,
+we put the key in the first operand
+and the associated data in the second operand.
 This keeps the key with its data.
 However, that is pretty much the extent of
 our analysis of key/data associations.
@@ -1063,7 +1010,7 @@ displays the three configurations that a search tree of height $n+2$ can have.
 Each diagram shows the root node as a circle labeled with a name for its key
 and shows the left and right subtrees as triangles dangling from the root.
 Each triangle represents an ordered, balanced subtree.
-A label in the middle of the triangle
+A label inside the triangle
 simplifies references to the subtree,
 and a formula near the bottom of the triangle
 specifies the height of the subtree.
@@ -1075,7 +1022,7 @@ both subtrees in \emph{E} have the same height.
 
 An insertion into tree \emph{E} cannot cause the tree to go out of balance
 because, at worst, insertion will make one side of the tree
-one unit taller than the other side, and leaves the tree
+one unit taller than the other side, which leaves the tree
 balanced. (The subtrees have height less than $n+2$,
 so the induction hypothesis guarantees that they remain
 balanced after insertion.)
@@ -1092,7 +1039,7 @@ Tree \emph{L} and tree \emph{R} represent the cases we need to look into.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.5]{images/ht2-or-more-ex.png}
+\includegraphics[scale=0.29]{images/ht2-or-more-ex.png}
 \end{center}
 \index{tree!balance}\index{searchtree!balance}
 \index{AVL tree!balance}\index{balance!AVL tree}
@@ -1138,50 +1085,82 @@ expanding tree \emph{L} from Figure \ref{fig:trees-of-ht-n+2}
 and two diagrams (\emph{RL} and \emph{RR}) expanding tree \emph{R}.
 
 Consider the problem of inserting a new key, $x$, into
-an ordered, balanced search tree of height $n+2$.
-The value of $x$ will fall into one of four intervals\footnote{We
+an ordered, balanced search tree of height $n+2$ with the key $k$
+in its root, the key $j$ in the root of its left subtree,
+and the key $k$ in the root of its right subtree.
+The value of $x$ will fall into one of four intervals.\footnote{We
 can ignore the possibility that $x$ is the same as
 $k$, $j$, or $i$ because
 inserting a key that is the same as one already in the
 tree does not change the tree,
 except to replace the data associated with the key.
 Therefore, the tree will remain balanced and
-require no further attention.}:
-\begin{quote}
-\index{tree!balance}\index{searchtree!balance}
-\index{AVL tree!balance}\index{balance!AVL tree}\
+require no further attention.}\index{tree!balance}\index{searchtree!balance}\index{AVL tree!balance}\index{balance!AVL tree}\
+\label{cases:ht-n+2}\begin{quote}
 \begin{enumerate}
-\label{cases:ht-n+2}
-\item case \emph{LL}: $x < j$ (refer to Figure \ref{fig:trees-of-ht-n+2-expanded})
+\item case \emph{LL}: $x < j < k$ (refer to Figure \ref{fig:trees-of-ht-n+2-expanded})
 \item case \emph{LR}: $j < x < k$
 \item case \emph{RL}: $k < x < i$
-\item case \emph{RR}: $i < x$
+\item case \emph{RR}: $k < i < x$
 \end{enumerate}
 \end{quote}
 
 The names of the cases correspond
 to the tree diagram in
 Figure \ref{fig:trees-of-ht-n+2-expanded} (page \pageref{fig:trees-of-ht-n+2-expanded})
-that we will use for analysis of the case.
+that we use to analyze the case.
 For example, if the new key $x$ is less than $k$,
 insertion cannot cause the tree to go out of
 balance unless the left subtree is taller
 than the right subtree, which focuses the
 analysis on trees \emph{LL} and \emph{LR}
-in Figure \ref{fig:trees-of-ht-n+2-expanded}.
-We use \emph{LL} for the case when $x < j$
+in the figure.
+We use \emph{LL} for the case when the new key $x$
+is smaller than the key $j$
+($x < j < k$)
 because that pushes the key into subtree \emph{jL},
 and the tree \emph{LL} will definitely go out of balance
 if insertion increases the height of \emph{jL}.
-The same insertion might not cause the tree \emph{LR}
-to go out of balance, even if it increases the height of
-the subtree \emph{jL}, because in tree \emph{LR}
-the subtree \emph{jL} may be shorter
-than its sibling, \emph{jR}.
-If not, then the situation is covered already in case \emph{LL}.
-For similar reasons, we use the diagrams
-of \emph{LR}, \emph{RL}, and \emph{RR}
-to analyze their namesake cases.
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.36]{images/zig-and-zag.png}
+\end{center}
+\index{tree!rebalance}\index{searchtree!rebalance}
+\index{AVL tree!rebalance}\index{balance!AVL rebalance}
+\caption{Insertion, Unbalanced Outcome, and Rebalancing}
+\label{fig:zig-and-zag}
+\end{figure}
+
+If the new key $x$ were between $j$ and $k$ ($j < x < k$),
+it would go into the subtree \emph{jR}.
+That might not cause the tree \emph{LL} to go out of balance,
+even if it increases the height of
+the subtree \emph{jR}, because in tree \emph{LL}
+the subtree \emph{jR} may be shorter than its sibling.
+So, we use the diagram of tree \emph{LR}
+(where an insertion into subtree \emph{jR}
+that increases its height will definitely
+produce a tree that is out of balance)
+to analyze the insertion of a
+key $x$ that lies between $j$ and $k$.
+
+Case \emph{RR} mirrors 
+case \emph{LL} and deals with the situation when the new key $x$
+is greater than $i$ ($x > i > k$).
+Case \emph{RL} mirrors case \emph{LR} and
+deals with the situation when the new key $x$
+is between $k$ and $i$ ($k < x < i$).
+To summarize, we start with $j < k < i$ and
+a new key $x$. The new key has to be in one of
+four places:
+$x < j < k$ (case \emph{LL}),
+$j < x < k$ (case \emph{LR}),
+$k < x < i$ (case \emph{RL}), or
+$k < i < x$ (case \emph{RR}).
+The four cases cover all the of the possibilities, so
+an analysis of all four cases is a complete analysis
+of the insertion procedure.
 
 Case \emph{LL} is the problem of inserting
 a key $x$ that is less than $j$
@@ -1197,21 +1176,11 @@ If it has height $n+1$, the tree, as a whole,
 will be out of balance (too tall on the left).
 It will need rebalancing.
 
-\begin{figure}
-\begin{center}
-\includegraphics[scale=0.38]{images/zig-and-zag.png}
-\end{center}
-\index{tree!rebalance}\index{searchtree!rebalance}
-\index{AVL tree!rebalance}\index{balance!AVL rebalance}
-\caption{Insertion, Unbalanced Outcome, and Rebalancing}
-\label{fig:zig-and-zag}
-\end{figure}
-
 Figure \ref{fig:zig-and-zag} (page \pageref{fig:zig-and-zag})
 displays the tree \emph{LL} before insertion
 (as it appeared in Figure \ref{fig:trees-of-ht-n+2-expanded})
 and a new, unbalanced tree, \emph{LLout}, which represents
-the outcome of inserting a new key $x$ ($x < j$) into \emph{LL}.
+the outcome of hooking a new key $x$ ($x < j$) into \emph{LL}.
 In the diagram of \emph{LLout}, the subtree
 \emph{jLx} is the one with the new key.
 The subtree \emph{jLx} has height $n+1$,
@@ -1230,14 +1199,14 @@ the key $j$ can go at the root, and the former root key, $k$,
 can hang from the right side of the new root.
 If we then plug the subtrees into the only places they
 can go that preserves order,
-the result, tree\emph{rLLout} (Figure \ref{fig:zig-and-zag}),
+the result, tree \emph{rLLout} (Figure \ref{fig:zig-and-zag}),
 is balanced and has height $n+2$.
 Voila! Like magic.
 
 This clockwise rotation of the the tree \emph{LLout},
 as shown in the figure,
-is traditionally called ``zig''.
-The mirror operation, zag, rotates counter-clockwise to fix
+is traditionally called \textsf{zig}.
+The mirror operation, \textsf{zag}, rotates counter-clockwise to fix
 the tree \emph{RRout}, which is too tall on the right.
 Formal definitions of these rotation operators reside in
 Figure \ref{defun:zig-and-zag} (page \pageref{defun:zig-and-zag}).
@@ -1267,7 +1236,7 @@ the diagrams in Figure \ref{fig:zig-and-zag}.
 \index{AVL tree!zig, zag operators}
 \seeonlyindex{zig, zag (AVL rotate)}{operator}
 \index{rotate AVL!zig, zag}
-\caption{Rotation Operators: zig and zag}
+\caption{Rotation Operators: \textsf{zig} and \textsf{zag}}
 \label{defun:zig-and-zag}
 \end{figure}
 
@@ -1283,15 +1252,17 @@ We turn our attention to these problems in the next section.
 \label{thm:unbal-ht3}
 Theorem \{\emph{unbal-ht3}\}:
 If $s$ is an unbalanced tree of height three,
-then one subtree of $s$ must be empty and the the other must have height two.
+then one subtree of $s$ is empty and the other has height two.
 That is, prove the following implication.
-\begin{quote}
-((height $s$) = 3 $\wedge$ ($\neg$ (balp $s$)))
-$\rightarrow$  \\
-(((height (lft $s$)) = 2 $\wedge$ (emptyp (rgt $s$)))
-$\vee$
-((emptyp (lft $s$)) $\wedge$ ((height (rgt $s$)) = 2)))
-\end{quote}
+\begin{center}
+\begin{tabular}{l}
+$(($\textsf{(height $s$)} $= 3) \wedge (\neg$ \textsf{(balp $s$)}$))
+\rightarrow$  \\
+$(($\textsf{((height (lft $s$))} $= 2) \wedge$ \textsf{(emptyp (rgt $s$))}$)
+\vee$
+\textsf{((emptyp (lft $s$))} $\wedge ($\textsf{(height (rgt $s$))} $= 2)))$\\
+\end{tabular}
+\end{center}
 \end{ExerciseList}
 
 \section{Double Rotations}
@@ -1302,10 +1273,13 @@ at a complete solution of the insertion problem.
 The cases we already solved
 (cases \emph{LL} and \emph{RR})
 are known as the ``outside cases'' because the subtrees that
-get the new keys and become too tall are on the outside of the diagram.
+get the new keys and become too tall are on the outside borders of the diagram.
 Cases \emph{LR} and \emph{RL}
 are ``ìnside cases'' because the problematic subtrees
-are on the inside of the tree diagram:
+are on the inside portion of the tree diagram, away from the borders.
+Another way to look at it is that $x$ is outside of the interval
+between $j$ and $i$ in the outside cases, 
+and inside the interval in the inside cases.
 
 \begin{center}
 \begin{tabular}{llll}
@@ -1315,7 +1289,7 @@ are on the inside of the tree diagram:
                     \\
 \end{tabular}
 \end{center}
-
+%\end{comment}
 The inside cases are trickier.
 Figure \ref{fig:inside-cases} (page \pageref{fig:inside-cases})
 shows how insertions into the trees \emph{LR} and \emph{RL}
@@ -1341,8 +1315,7 @@ and a right subtree of height $n+3$
 (see Figure \ref{fig:badzig}, page \pageref{fig:badzig}).
 That is, applying the rotation operator, zig, to \emph{LRin}
 leads to a tree that is at least as out of balance as \emph{LRin}.
-Clockwise rotation doesn't help,
-and can make things worse.
+Clockwise rotation doesn't help.
 We need a new trick to rebalance \emph{LRin}.
 
 \begin{figure}
@@ -1370,13 +1343,13 @@ have been the other way around, with
 \emph{yL} having height $n$ and \emph{yR}, height $n^-$.
 The analysis is the same either way.
 We will pursue the alternative
-displayed in Figure \ref{fig:dbl-rotation},
-and leave it to you to draw the diagram the other way,
-just to make sure it all works out.
+displayed in Figure~\ref{fig:dbl-rotation},
+and leave it to you to draw the diagram the other way
+and make sure it works. The exercise will be good practice.
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=0.4]{images/dbl-rotation.png}
+\includegraphics[scale=0.26]{images/dbl-rotation.png}
 \end{center}
 \index{tree!rebalance}\index{searchtree!rebalance}
 \index{AVL tree!rebalance}\index{balance!AVL rebalance}
@@ -1386,38 +1359,40 @@ just to make sure it all works out.
 \label{fig:dbl-rotation}
 \end{figure}
 
-The diagram makes it clear than we can apply zag
+The diagram in Figure~\ref{fig:dbl-rotation} 
+makes it clear that we can apply \textsf{zag}
 (counterclockwise rotation)
 to the left subtree of \emph{LRin}.
 It's a counterintuitive move, might not help, might even make things worse,
 but it's possible, nonetheless.\footnote{\label{no-zag}It would not be possible
-to apply zag if \emph{jRx} were empty.}
-When we apply the zag operator to
+to do a \textsf{zag} rotation if \emph{jRx} were empty.}
+When we apply the \textsf{zag} operator to
 the left subtree of \emph{LRin},
-we get the following result, expressed
-using the algebraic formula [$y$ $p$ \emph{yL} \emph{yR}]
-for \emph{jRx}.\footnote{The formula uses $p$ to denote
+we get the following tree,
+with the algebraic formula [$y$ $p$ \emph{yL} \emph{yR}]
+for subtree \emph{jRx}.\footnote{The formula uses $p$ to denote
 the data associated with the key $y$.}
 \begin{center}
-(zag (lft \emph{LRin})) =
-(zag [$j$ $c$ \emph{jL} [$y$ $p$ \emph{yL} \emph{yR}]]) =
-[$y$ $p$ [$j$ $c$ \emph{jL} \emph{yL}] \emph{yR}]
+\textsf{(zag (lft} \emph{LRin}\textsf{))} =
+\textsf{(zag [$j$ $c$} \emph{jL} \textsf{[$y$ $p$} \emph{yL} \emph{yR}\textsf{]])} =
+\textsf{[$y$ $p$ [$j$ $c$} \emph{jL} \emph{yL}\textsf{]} \emph{yR}\textsf{]}
 \end{center}
 
 Starting from the unbalanced search tree \emph{LRin}
 on the left side of Figure \ref{fig:dbl-rotation},
 the middle portion of the figure displays the tree \emph{rLRin},
-which is \emph{LRin} with zag applied to its left subtree.
-The tree \emph{rLRin},
+which is \emph{LRin} with \textsf{zag} applied to its left subtree.
+The tree \emph{rLRin}
 is not balanced, but the subtree that is too tall
-(namely, [$y$ $p$ [$j$ $c$ \emph{jL} \emph{yL}] \emph{yR}])
+(namely, \textsf{[$y$ $p$ [$j$ $c$} \emph{jL} \emph{yL}\textsf{]} \emph{yR}\textsf{]})
 is on the outside left part of \emph{rLRin}.
-Therefore, we can apply zig to \emph{rLRin}, as a whole.
+Therefore, we can apply \textsf{zig} to \emph{rLRin}, as a whole,
+to get it back in balance.
 \begin{center}
-(zig \emph{rLRin}) =
-(zig [$k$ $d$ [$y$ $p$ [$j$ $c$ \emph{jL} \emph{yL}] \emph{yR}]] \emph{kR}]) =
-[$y$ $p$ [$j$ $c$ \emph{jL} \emph{yL}] [$k$ $d$ \emph{yR} \emph{kR}]]
-= \emph{rrLRin}
+\textsf{(zig} \emph{rLRin}\textsf{)} $=$
+\textsf{(zig [$k$ $d$ [$y$ $p$ [$j$ $c$} \emph{jL} \emph{yL}\textsf{]} \emph{yR}\textsf{]]} \emph{kR}\textsf{])} $=$
+\textsf{[$y$ $p$ [$j$ $c$} \emph{jL} \emph{yL}\textsf{] [$k$ $d$} \emph{yR} \emph{kR}\textsf{]]}
+$=$ \emph{rrLRin}
 \end{center}
 This second rotation leads to
 the tree \emph{rrLRin},
@@ -1430,11 +1405,11 @@ Figure \ref{defun:rot+} (page \pageref{defun:rot+})
 formalizes the rebalancing of trees
 that have become too tall on the left, due to the
 insertion of a key that is less than the key at the root.
-The operator rot+, which is defined in the figure,
+The operator \textsf{rot}+, which is defined in the figure,
 chooses whether to apply a single rotation,
 double rotation, or no rotation
 (depending on subtree heights)
-and uses the zig and zag operators
+and uses the \textsf{zig} and \textsf{zag} operators
 (Figure \ref{defun:zig-and-zag}, page \pageref{defun:zig-and-zag})
 to carry whatever rotations are necessary, if any.
 
@@ -1460,46 +1435,44 @@ to carry whatever rotations are necessary, if any.
 \label{defun:rot+}
 \end{figure}
 
-The operator rot+ performs a clockwise
+The operator \textsf{rot}+ performs a clockwise
 rotation on a tree that is too tall on the left
 (that is, a tree with a left subtree whose height exceeds that
 of its right subtree by two).
 Assuming that, before rotation,
 the tree is ordered and that all of its subtrees are balanced,
-the tree that rot+ delivers will ordered and balanced,
+the tree that \textsf{rot}+ delivers will be ordered and balanced,
 as our case-by-case analysis showed.
-If rot+ is applied to a tree whose left subtree
+If \textsf{rot}+ is applied to a tree whose left subtree
 is the same height as its right subtree,
-or possibly one unit taller, rot+ delivers its argument as-is,
+or possibly one unit taller, \textsf{rot}+ delivers its operand as-is,
 because it is already a balanced tree.
-Likewise, rot+ delivers its argument, as-is,
+Likewise, \textsf{rot}+ delivers its operand, as-is,
 if the left subtree is shorter than the right subtree.
-
-Counter-clockwise rotation is the mirror image of rot+.
-We will use the name rot- for the counter-clockwise rotation operator
+Counter-clockwise rotation is the mirror image of \textsf{rot}+.
+We will use the name \textsf{rot-} for the counter-clockwise rotation operator
 and leave its definition as an exercise.
 
 There are no other cases in which insertion
 can cause the tree to go out of balance,
 so the proof by induction of the
 order, balance, and height properties
-of the insertion operator is complete.
-It is formally defined in
-Figure \ref{defun:ins} (page \pageref{defun:ins}).
-The definition is, of course, inductive.
+of the insertion operator, \textsf{ins}, is complete, and
+Figure \ref{defun:ins} (page \pageref{defun:ins})
+displays the formal definition of \textsf{ins}.
+
+The definition is inductive.
 The new key goes into the left subtree
 if it is smaller than the key at the root,
 and into the right subtree if it is greater.
 If the new key is the same as the one at the root,
 the insertion operator puts new the data at the root
 with that key.\footnote{This treatment
-of data associated with a key is the same
-as with the operator, hook, and for the same reasons
+of the key/data association is
+as with the \textsf{hook} operator and for the same reasons
 (page \pageref{same-key-new-data}).}
 If the insertion produces, at first, an unbalanced tree,
-it is rebalanced using rot+ or rot-.
-Otherwise, insertion delivers the tree
-with the new key without rotation.
+it is rebalanced by \textsf{rot}+ or \textsf{rot-}.
 
 \begin{figure}
 \begin{center}
@@ -1528,40 +1501,81 @@ as well as insert them.
 Deletion is a little more complicated than
 insertion, but uses the same basic rotation operators.
 You know enough, now, to explore the AVL deletion operator on your own.
-Check it out in Wikipedia or a textbook on algorithms.
+You can check it out online or a in textbook on algorithms.
 
 \begin{ExerciseList}
 \Exercise A footnote on page \pageref{no-zag} points out
-that is it not possible to apply the zag operator to
+that is it not possible to apply the \textsf{zag} operator to
 a tree whose right subtree is empty.
-Similarly, zig does not apply to a tree whose left subtree is empty.
+Similarly, \textsf{zig} does not apply to a tree whose left subtree is empty.
 Explain why.
 
-\Exercise Prove that (ins $x$ $a$ nil) delivers a tree that is
+\Exercise Prove that \textsf{(ins $x$ $a$ nil)} delivers a tree that is
 ordered and balanced.
 
-\Exercise Prove that (ins $x$ $a$ $s$)
-delivers an ordered, balanced tree when (height $s$) = 1.
+\Exercise Prove that \textsf{(ins $x$ $a$ $s$)}
+delivers an ordered, balanced tree if (height $s$) = 1.
 
-\Exercise Define rot- \label{defun:rot-}
-(see the definition of rot+, page \pageref{defun:rot+}).
+\Exercise Define \textsf{rot-} \label{defun:rot-}
+(see the definition of \textsf{rot}+, page \pageref{defun:rot+}).
 
 \end{ExerciseList}
 
 \section{Fast Insertion}
 
-The rotation operators, rot+ and rot-, as discussed so far,
+The rotation operators, \textsf{rot}+ and \textsf{rot-}, as discussed so far,
 compute the heights of the subtrees to choose the proper rotation.
 This takes a lot of time because it requires
-looking through all the ways to get from the root to the leaves.
+looking through all the ways to get from the root to the leaves.\footnote{A
+leaf is a search tree whose left and right subtrees are both empty.}
 To do this, all of the nodes must be examined, so the number of steps in
 the computation is proportional to the number of nodes in the tree.
-Furthermore, since ins has to check
+Furthermore, since \textsf{ins} has to check
 for possible rotations at every level in the
 tree, there are a great many height computations to perform, and this
 makes the insertion process take way too many computation steps.
 
-Fortunately, there is a way to avoid the 
+\begin{figure}
+\begin{center}
+\begin{Verbatim}
+(defun ht (s) ; extract height of tree s
+  (if (empty s)
+      0
+      (fifth s)))
+(defun mktr (k d lf rt) ; make tree from key, data, and subtrees
+    (list k d lf rt h (+ 1 (max (ht lf) (ht rt)))))
+(defun treep (s) ; search tree?
+  (or (emptyp s)
+      (and (n-element-list 5 s) (iskeyp (key s))
+           (treep (lft s)) (treep (rgt s))
+           (= (ht s) (+ 1 (max (ht(lft s)) (ht(rgt s))))))))
+(defun rot+ (s) ; rotate clockwise if too tall on left
+  (let* ((k  (key s)) (d  (dat s)) ; rot+ assumes s is not empty
+         (kL (lft s)) (kR (rgt s)))
+    (if (> (ht kL) (+ (ht kR) 1))           ; unbalanced?
+        (if (< (ht (lft kL)) (ht (rgt kL))) ; inside lft?
+            (zig(mktr k d (zag kL) kR))     ; dbl rotate
+            (zig s))                        ; sngl rotate
+        s)))                                ; no rotate
+\end{Verbatim}
+\end{center}
+\index{operator, by name!ht (AVL height, fast)}
+\index{operator, by name!mktr, fast}
+\index{AVL tree!ht (height, fast)}
+\index{AVL tree!mktr, fast}
+\index{AVL tree!treep predicate, fast}
+\index{predicate, by name!treep, fast (AVL)}
+\index{operator, by name!treep (AVL, \emph{see} predicate)!fast (\emph{see} predicate)}
+\seeonlyindex{ht (AVL height, fast)}{operator}
+\index{operator, by name!rot+ (AVL rotate)!fast}
+\seeonlyindex{rot+}{operator}
+\index{AVL tree!rotate, fast}
+\index{rotate AVL!fast}
+\caption{Revised Operators To Avoid Height Computation}
+\label{defun:balance-factor}
+\end{figure}
+
+Fortunately, there is a way to avoid the
 \index{operator, by name!ht (AVL height, fast)}
 \index{AVL tree!ht (height, fast)}height computation
 by recording tree height
@@ -1586,88 +1600,42 @@ than keeping track of heights,
 and balance factors are a little more
 efficient in terms of time and space.
 However, going this route would require several
-more changes in the defined operations,
-so we'll just stick with heights to avoid additional complication.}
+more changes in the formal definitions,
+so we'll just stick with heights to avoid complicating the presentation.}
 
 To use the approach that avoids
 the time-consuming computation of height,
-three of the operators
-in Figure \ref{fig:tree-functions} (page \pageref{fig:tree-functions})
-that define the representation of trees
-must be changed:
+a few of the operators implementing the AVL solution
+(Figure~\ref{fig:tree-functions}, page \pageref{fig:tree-functions}, and
+Figure~\ref{defun:rot+}, page \pageref{defun:rot+})
+must change.
 
 \begin{quote}
 \index{operator, by name!ht (AVL height, fast)}
 \index{AVL tree!ht (height, fast)}
 \begin{enumerate}
-\item mktr must put the height in the tree it builds,
-\item the new height operator, which will be called ``ht'',
-      will simply extract the height that mktr
-      records in the tree (rather than computing the height), and
-\item treep, the predicate used to determine whether or not
+\item The \textsf{mktr} operator must put the height in the tree it builds.
+\item The new height operator, \textsf{ht},
+      will simply extract the height that \textsf{mktr}
+      records in the tree (rather than computing the height).
+\item The \textsf{treep} predicate that is used to determine whether or not
       a given entity is a tree, must account for the
       height record in the new representation.
+\item The \textsf{rot}+ and \textsf{rot-} operators must refer to \textsf{ht}
+      instead of the old, slow \textsf{height} operator.
 \end{enumerate}
 \end{quote}
 
-\begin{figure}
-\begin{center}
-\begin{Verbatim}
-(defun ht (s)           ; extract height of tree s
-  (if (empty s)
-      0
-      (fifth s)))
-(defun mktr (k d lf rt) ; make tree from key, data, and subtrees
-    (list k d lf rt h (+ 1 (max (ht lf) (ht rt)))))
-(defun treep (s)        ; search tree?
-  (or (emptyp s)
-      (and (n-element-list 5 s) (iskeyp (key s))
-           (treep (lft s)) (treep (rgt s))
-           (= (ht s) (+ 1 (max (ht(lft s)) (ht(rgt s))))))))
-\end{Verbatim}
-\end{center}
-\index{operator, by name!ht (AVL height, fast)}
-\index{operator, by name!mktr, fast}
-\index{AVL tree!ht (height, fast)}
-\index{AVL tree!mktr, fast}
-\index{AVL tree!treep predicate, fast}
-\index{predicate, by name!treep, fast (AVL)}
-\index{operator, by name!treep (AVL, \emph{see} predicate)!fast (\emph{see} predicate)}
-\seeonlyindex{ht (AVL height, fast)}{operator}
-\caption{Revised Operators To Avoid Height Computation}
-\label{defun:balance-factor}
-\end{figure}
-
 Figure \ref{defun:balance-factor} (page \pageref{defun:balance-factor})
-formalizes the new versions of mktr, ht, and treep.
-The definition of ins, rot+, and rot- stay as they were,
-except that the rotations refer to ht,
+formalizes the new versions of 
+\textsf{mktr}, \textsf{ht}, \textsf{treep}, and \textsf{rot}+.
+The other operators remain unchanged,
+and the only changes needed in \textsf{rot}+ and \textsf{rot-}
+are that the invocations of the height function
+must refer to \textsf{ht},
 the new height extraction operator,
 instead the operator that computed height
 in a time-consuming way.
-Figure \ref{defun:rot+fast} (page \pageref{defun:rot+fast})
-shows the revised definition of rot+.
-
-\begin{figure}
-\begin{center}
-\begin{Verbatim}
-(defun rot+ (s)           ; rotate clockwise if too tall on left
-  (let* ((k  (key s)) (d  (dat s)) ; rot+ assumes s is not empty
-         (kL (lft s)) (kR (rgt s)))
-    (if (> (ht kL) (+ (ht kR) 1))           ; unbalanced?
-        (if (< (ht (lft kL)) (ht (rgt kL))) ; inside lft?
-            (zig(mktr k d (zag kL) kR))     ; dbl rotate
-            (zig s))                        ; sngl rotate
-        s)))                                ; no rotate
-\end{Verbatim}
-\end{center}
-\index{operator, by name!rot+ (AVL rotate)!fast}
-\seeonlyindex{rot+}{operator}
-\index{AVL tree!rotate, fast}
-\index{rotate AVL!fast}
-\caption{Clockwise Rotation Using Height Extraction}
-\label{defun:rot+fast}
-\end{figure}
 
 The new definitions are no more complicated than the originals,
 but they make a huge difference in the speed of insertion.
@@ -1676,11 +1644,11 @@ element with the original definitions grows faster than
 the number of items in the tree.
 Recording heights directly in the tree,
 rather than computing the height of the tree,
-reduces the number of computation
-steps for insertion to something proportional to the logarithm of
+makes the number of computation
+steps for insertion proportional to the logarithm of
 the number of items in the tree.
 
-To get a feeling for the difference, invoke the function time-chk
+To get a feeling for the difference, invoke the operator time-chk
 (defined as follows) for larger and larger trees,
 and measure the time it takes.
 Start with, say 100 elements, then 200, 400, 800, and
@@ -1701,7 +1669,7 @@ the time it takes to build the tree.
 \end{center}
 
 \begin{aside}
-The reason the function time-chk delivers only the height
+The reason the operator \textsf{time-chk} delivers only the height
 of the tree it builds, rather than the tree itself, is
 because it would take a lot of time and space to print the tree.
 We're just interested in the amount of time it takes,
@@ -1715,13 +1683,13 @@ but we are only interested in ballpark estimates,
 so it will do for our purposes.
 
 Incidentally, the height of the tree
-that (time-chk $n$) delivers should be
+that \textsf{(time-chk $n$)} delivers should be
 less than
-$1.5 \times log_2(n+1)$.
+$frac{3}{2}\cdot log_2(n+1)$.
 If it's not, something is wrong.
 An approximate way use ACL2 to check tree heights
 for plausibility is to invoke the predicate height-right?,
-defined as follows, whose value, should be ``true''.
+defined as follows, whose value, should be true.\\
 
 \begin{center}
 \index{AVL tree!ht (height, fast) test}\index{height!test ht operator}
@@ -1740,23 +1708,19 @@ defined as follows, whose value, should be ``true''.
 \label{timing-tricks}
 \end{aside}
 
-After you complete the timings with the fast version of ins,
-switch to the old version that
-uses computed height instead of the height extractor, ht,
-and do the timings again.
-You will see original operators take a long time
-when the number of keys is large.
+After you complete the timings with the slow version of \textsf{ins},
+switch to the fast version and do the timings again.
+You will see that the slow version takes a long time
+when there are many keys.
 Inserting items one by one, starting from an empty tree,
-to build a tree with $n$ keys takes time proportional to $n log(n)$
+to build a tree with $n$ keys takes time proportional to $n~log_(n)$
 with the fast version of insertion.
-With the version that computes height
-instead of keeping track of it in the tree representation,
+With the slow version,
 building a tree with $n$ keys takes an amount of time
 that grows faster than $n^2$.
 These are the kinds of improvements in speed that
-make software that is practical to use
-in computation problems that would otherwise
-take too long to solve.
+make software useful in practice, compared to software
+that would be infeasible to use in large applications.
 
 AVL trees are one of several kinds of self-balancing
 trees that support fast retrieval of data associated with keys.
@@ -1764,8 +1728,8 @@ The various solutions to the problem have different advantages,
 but all of them make fast insertion, deletion, and retrieval possible.
 
 \begin{ExerciseList}
-\Exercise Carry out the timing experiment described at
-the end of this section and report the results.
+\Exercise Carry out the timing experiment described
+in this section and report the results.
 \end{ExerciseList}
 
 \begin{comment}
