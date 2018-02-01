@@ -348,13 +348,16 @@
 	],
 	"file_history":
 	[
+		"/Users/ruben/Dropbox/LogicBook/ch08.tex",
+		"/Users/ruben/Dropbox/LogicBook/ch11.tex",
+		"/Users/ruben/Dropbox/LogicBook/ch12.tex",
+		"/Users/ruben/Dropbox/LogicBook/ch04.tex",
+		"/Users/ruben/Dropbox/LogicBook/ch02.tex",
 		"/Users/ruben/Dropbox/LogicBook/ch01.tex",
 		"/Users/ruben/Dropbox/LogicBook/logic-book.sublime-project",
-		"/Users/ruben/Dropbox/LogicBook/ch02.tex",
 		"/Users/ruben/Dropbox/Classes/discrete-math/quizzes/quiz01.tex",
 		"/Users/ruben/Dropbox/Classes/discrete-math/slides/m1-logic.tex",
 		"/Users/ruben/Dropbox/LogicBook/book.tex",
-		"/Users/ruben/Dropbox/LogicBook/ch04.tex",
 		"/Users/ruben/Dropbox/Classes/data-science/python-projects-data-science/manuscript/chapter-01.md",
 		"/Users/ruben/Dropbox/Classes/data-science/python-projects-data-science/manuscript/chapter-02.md",
 		"/Users/ruben/Documents/acl2s-workspace/sets/sets-assignment.lisp",
@@ -472,14 +475,11 @@
 		"/Users/ruben/Dropbox/ACL2r/2017/cayley/cayley-slides.log",
 		"/Users/ruben/Dropbox/Classes/databases/ugrad/slidify/ch06-sql.Rmd",
 		"/Users/ruben/Dropbox/sets.lisp",
-		"/Users/ruben/Dropbox/ACL2r/2017/cayley/cayley-paper1.tex",
-		"/Users/ruben/Dropbox/ACL2r/2017/cayley/cayley-paper1.bib",
-		"/Users/ruben/Documents/acl2s-workspace/sets/sets.lisp",
-		"/Users/ruben/Dropbox/ACL2r/2014/equivalences/supporting-materials/series2a.lisp"
+		"/Users/ruben/Dropbox/ACL2r/2017/cayley/cayley-paper1.tex"
 	],
 	"find":
 	{
-		"height": 35.0
+		"height": 58.0
 	},
 	"find_in_files":
 	{
@@ -494,6 +494,16 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"fig:searchtree-diagram",
+			"cap",
+			"Note:",
+			"Exercises",
+			"$\\{\\text{implication}\\}$",
+			"fig-02-",
+			"\\tabular",
+			"x",
+			"false",
+			"true",
 			"fixltx",
 			"’",
 			"”",
@@ -611,17 +621,7 @@
 			"PRINT_LARGE",
 			"includegra",
 			"&&",
-			"7a",
-			"5a",
-			"4",
-			"Trick For",
-			"gauss",
-			"M.S. Students",
-			"jagadish",
-			"extends",
-			"\"",
-			"different",
-			"anti-symme"
+			"7a"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -670,7 +670,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 35.0
+		"height": 41.0
 	},
 	"input":
 	{
@@ -723,7 +723,7 @@
 	"project": "logic-book.sublime-project",
 	"replace":
 	{
-		"height": 66.0
+		"height": 78.0
 	},
 	"save_all_on_build": true,
 	"select_file":
